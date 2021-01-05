@@ -1,0 +1,10 @@
+[package]
+name = "ios"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+common = { path = "../../common" }
+
+[build-dependencies]
+cbindgen = "0.15.0"
