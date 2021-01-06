@@ -270,6 +270,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cd51eab21ab4fd6a3bf889e2d0958c0a6e3a61ad04260325e919e652a2a62826"
 
 [[package]]
+name = "copyless"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2df960f5d869b2dd8532793fde43eb5427cceb126c929747a26823ab0eeb536"
+
+[[package]]
 name = "core-foundation"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -748,6 +754,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "gfx-backend-metal"
+version = "0.6.0"
+dependencies = [
+ "arrayvec",
+ "bitflags",
+ "block",
+ "cocoa-foundation",
+ "copyless",
+ "foreign-types",
+ "gfx-auxil",
+ "gfx-hal",
+ "lazy_static",
+ "log",
+ "metal",
+ "objc",
+ "parking_lot",
+ "range-alloc",
+ "raw-window-handle",
+ "spirv_cross",
+ "storage-map",
+]
+
+[[package]]
 name = "gfx-backend-vulkan"
 version = "0.6.5"
 dependencies = [
@@ -878,14 +907,6 @@ dependencies = [
  "js-sys",
  "wasm-bindgen",
  "web-sys",
-]
-
-[[package]]
-name = "ios"
-version = "0.0.1"
-dependencies = [
- "cbindgen",
- "common",
 ]
 
 [[package]]
@@ -1049,6 +1070,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "157b4208e3059a8f9e78d559edc658e13df41410cb3ae03979c83130067fdd87"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "metal"
+version = "0.20.1"
+source = "git+https://github.com/gfx-rs/metal-rs?rev=ba08f5f98c70ab941020b8997936c9c75363b9aa#ba08f5f98c70ab941020b8997936c9c75363b9aa"
+dependencies = [
+ "bitflags",
+ "block",
+ "cocoa-foundation",
+ "foreign-types",
+ "log",
+ "objc",
 ]
 
 [[package]]
@@ -1336,6 +1370,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "915b1b472bc21c53464d6c8461c9d3af805ba1ef837e1cac254428f4a77177b1"
 dependencies = [
  "malloc_buf",
+ "objc_exception",
+]
+
+[[package]]
+name = "objc_exception"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ad970fb455818ad6cba4c122ad012fae53ae8b4795f86378bce65e4f6bab2ca4"
+dependencies = [
+ "cc",
 ]
 
 [[package]]
@@ -1542,6 +1586,10 @@ checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
 dependencies = [
  "rand_core",
 ]
+
+[[package]]
+name = "range-alloc"
+version = "0.1.1"
 
 [[package]]
 name = "raw-window-handle"
@@ -1772,6 +1820,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "storage-map"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "418bb14643aa55a7841d5303f72cf512cfb323b8cc221d51580500a1ca75206c"
+dependencies = [
+ "lock_api",
+]
+
+[[package]]
 name = "strsim"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1844,12 +1901,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tearchan-example-ios"
+version = "0.0.1"
+dependencies = [
+ "cbindgen",
+ "common",
+]
+
+[[package]]
 name = "tearchan-gfx"
 version = "0.0.1"
 dependencies = [
  "gfx-auxil",
  "gfx-backend-empty",
  "gfx-backend-gl",
+ "gfx-backend-metal",
  "gfx-backend-vulkan",
  "gfx-hal",
  "image",
