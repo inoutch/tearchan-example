@@ -3,21 +3,65 @@ use gfx_hal::command::{
 };
 use gfx_hal::image::{Extent, Layout};
 use gfx_hal::pass::{Attachment, AttachmentLoadOp, AttachmentOps, AttachmentStoreOp, SubpassDesc};
-use gfx_hal::pso::{PipelineStage, Rect};
+use gfx_hal::pso::{PipelineStage, Rect, Rasterizer, Primitive};
 use gfx_hal::queue::Submission;
 use std::iter;
 use std::iter::Once;
 use tearchan::scene::context::{SceneContext, SceneRenderContext};
 use tearchan::scene::factory::SceneFactory;
 use tearchan::scene::{Scene, SceneControlFlow};
-use tearchan_gfx::{CommandBuffer, Semaphore};
+use tearchan_gfx::{CommandBuffer, RenderPass, Semaphore, RenderPipelineDesc};
 use winit::event::WindowEvent;
+use tearchan_gfx::hal::RenderPipelineDescCommon;
 
-pub struct HelloWorldScene {}
+pub struct HelloWorldScene {
+    render_pass: RenderPass,
+}
 
 impl HelloWorldScene {
     pub fn factory() -> SceneFactory {
-        |_context, _| Box::new(HelloWorldScene {})
+        |context, _| {
+            let gfx = context.gfx();
+            let color_format = gfx.find_support_format();
+            let depth_stencil_format = gfx.swapchain_desc().depth_color_format;
+            let render_pass = {
+                let color_load_op = AttachmentLoadOp::Clear;
+                let depth_load_op = AttachmentLoadOp::Clear;
+                let attachment = Attachment {
+                    format: Some(color_format),
+                    samples: 1,
+                    ops: AttachmentOps::new(color_load_op, AttachmentStoreOp::Store),
+                    stencil_ops: AttachmentOps::DONT_CARE,
+                    layouts: Layout::Undefined..Layout::Present,
+                };
+                let depth_attachment = Attachment {
+                    format: Some(depth_stencil_format),
+                    samples: 1,
+                    ops: AttachmentOps::new(depth_load_op, AttachmentStoreOp::Store),
+                    stencil_ops: AttachmentOps::DONT_CARE,
+                    layouts: Layout::Undefined..Layout::DepthStencilAttachmentOptimal,
+                };
+                let subpass = SubpassDesc {
+                    colors: &[(0, Layout::ColorAttachmentOptimal)],
+                    depth_stencil: Some(&(1, Layout::DepthStencilAttachmentOptimal)),
+                    inputs: &[],
+                    resolves: &[],
+                    preserves: &[],
+                };
+                gfx.device()
+                    .create_render_pass(&[attachment, depth_attachment], &[subpass], &[])
+            };
+
+            let pipeline_desc = RenderPipelineDesc {
+                label: None,
+                shader: None,
+                main_pass: &render_pass,
+                rasterization: Rasterizer::FILL,
+                primitive: Primitive::TriangleList,
+            };
+            let pipeline = gfx.device().create_render_pipeline(pipeline_desc);
+            Box::new(HelloWorldScene { render_pass })
+        }
     }
 }
 
@@ -29,8 +73,6 @@ impl Scene for HelloWorldScene {
     fn render(&mut self, context: &mut SceneRenderContext) -> SceneControlFlow {
         let frame = context.gfx_rendering().frame();
         let gfx = context.gfx();
-        let color_format = gfx.find_support_format();
-        let depth_stencil_format = frame.depth_texture().format().clone();
         let extent = Extent {
             width: gfx.swapchain_desc().config.extent.width,
             height: gfx.swapchain_desc().config.extent.height,
@@ -52,42 +94,15 @@ impl Scene for HelloWorldScene {
         let command_buffer = frame.command_pool().allocate_one(Level::Primary);
         command_buffer.begin_primary(CommandBufferFlags::ONE_TIME_SUBMIT);
 
-        let render_pass = {
-            let color_load_op = AttachmentLoadOp::Clear;
-            let depth_load_op = AttachmentLoadOp::Clear;
-            let attachment = Attachment {
-                format: Some(color_format),
-                samples: 1,
-                ops: AttachmentOps::new(color_load_op, AttachmentStoreOp::Store),
-                stencil_ops: AttachmentOps::DONT_CARE,
-                layouts: Layout::Undefined..Layout::Present,
-            };
-            let depth_attachment = Attachment {
-                format: Some(depth_stencil_format),
-                samples: 1,
-                ops: AttachmentOps::new(depth_load_op, AttachmentStoreOp::Store),
-                stencil_ops: AttachmentOps::DONT_CARE,
-                layouts: Layout::Undefined..Layout::DepthStencilAttachmentOptimal,
-            };
-            let subpass = SubpassDesc {
-                colors: &[(0, Layout::ColorAttachmentOptimal)],
-                depth_stencil: Some(&(1, Layout::DepthStencilAttachmentOptimal)),
-                inputs: &[],
-                resolves: &[],
-                preserves: &[],
-            };
-            gfx.device()
-                .create_render_pass(&[attachment, depth_attachment], &[subpass], &[])
-        };
         let framebuffer = context.gfx().device().create_framebuffer_with_frame(
-            &render_pass,
+            &self.render_pass,
             &frame,
             vec![frame.depth_texture().image_view()],
             extent,
         );
 
         command_buffer.begin_render_pass(
-            &render_pass,
+            &self.render_pass,
             &framebuffer,
             render_area,
             &[
