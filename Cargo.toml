@@ -15,9 +15,6 @@ edition = "2018"
 [lib]
 crate-type = ["lib", "cdylib"]
 
-[features]
-vulkan = ["common/vulkan"]
-
 [dependencies]
 log = "0.4.11"
 env_logger = "0.8.1"
