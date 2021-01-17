@@ -44,6 +44,8 @@ targets:
       - sdk: UIKit.framework
       - sdk: Metal.framework
       - sdk: Security.framework
+      - sdk: CoreAudio.framework
+      - sdk: AudioToolbox.framework
       - target: cargo
         embed: false
     info:
@@ -51,5 +53,5 @@ targets:
       properties:
         UIRequiresFullScreen: true
         UIStatusBarHidden: true
-        UISupportedInterfaceOrientations: [UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations: [UIDeviceOrientationPortrait]
         UILaunchStoryboardName: LaunchScreen

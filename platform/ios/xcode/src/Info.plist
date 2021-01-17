@@ -26,7 +26,7 @@
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIDeviceOrientationPortrait</string>
 	</array>
 </dict>
 </plist>

@@ -13,7 +13,7 @@ env_logger = "0.8.1"
 wgpu = { path = "../../wgpu-rs" }
 bytemuck = "1.5.0"
 nalgebra-glm = "0.10.0"
-cpal = "0.13.1"
+cpal = { path = "../../cpal" }
 tearchan-util = { path = "../../tearchan/tearchan-util" }
 # framworks
 winit = { version = "0.24.0", features = ["web-sys"] }
