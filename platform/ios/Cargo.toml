@@ -1,7 +1,10 @@
 [package]
-name = "ios"
+name = "tearchan-example-ios"
 version = "0.0.1"
 edition = "2018"
+
+[lib]
+crate-type = ["staticlib"]
 
 [dependencies]
 common = { path = "../../common" }
