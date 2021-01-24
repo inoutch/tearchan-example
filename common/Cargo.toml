@@ -4,17 +4,23 @@ version = "0.0.1"
 edition = "2018"
 
 [features]
-web = ["tearchan-gfx/webgl"]
-vulkan = ["tearchan-gfx/vulkan"]
-metal = ["tearchan-gfx/metal"]
+web = ["wgpu/webgl", "tearchan-gfx/webgl"]
 
 [dependencies]
 # libs
 log = "0.4.11"
 env_logger = "0.8.1"
+wgpu = { path = "../../wgpu-rs" }
+bytemuck = "1.5.0"
+nalgebra-glm = "0.10.0"
+cpal = "0.13.1"
+tearchan-util = { path = "../../tearchan/tearchan-util" }
 # framworks
 winit = { version = "0.24.0", features = ["web-sys"] }
-gfx-hal = { path = "../../gfx/src/hal" }
-tearchan = { path="../../tearchan" }
-tearchan-gfx = { path="../../tearchan/tearchan-gfx" }
-tearchan-horde = { path="../../tearchan/tearchan-horde" }
+tearchan = { path = "../../tearchan" }
+tearchan-gfx = { path = "../../tearchan/tearchan-gfx" }
+tearchan-horde = { path = "../../tearchan/tearchan-horde" }
+
+[build-dependencies]
+shaderc = "0.6.2"
+tearchan-tools = { path = "../../tearchan/tearchan-tools" }

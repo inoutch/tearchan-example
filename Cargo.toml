@@ -15,10 +15,6 @@ edition = "2018"
 [lib]
 crate-type = ["lib", "cdylib"]
 
-[features]
-vulkan = ["common/vulkan"]
-metal = ["common/metal"]
-
 [dependencies]
 log = "0.4.11"
 env_logger = "0.8.1"
@@ -27,3 +23,6 @@ common = { path = "common" }
 [target.'cfg(target_os = "android")'.dependencies]
 ndk-sys = "0.2.1"
 ndk-glue = "0.2.1"
+
+[package.metadata.android]
+assets = "common/assets"
