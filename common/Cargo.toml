@@ -23,3 +23,4 @@ tearchan-horde = { path = "../../tearchan/tearchan-horde" }
 
 [build-dependencies]
 shaderc = "0.6.2"
+tearchan-tools = { path = "../../tearchan/tearchan-tools" }

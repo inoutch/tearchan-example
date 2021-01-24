@@ -23,3 +23,6 @@ common = { path = "common" }
 [target.'cfg(target_os = "android")'.dependencies]
 ndk-sys = "0.2.1"
 ndk-glue = "0.2.1"
+
+[package.metadata.android]
+assets = "common/assets"
