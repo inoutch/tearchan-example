@@ -292,3 +292,4 @@ target/
 
 .idea
 platform/ios/bindings.h
+platform/ios/xcode/tearchan-example.xcodeproj

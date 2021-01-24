@@ -6,6 +6,7 @@ edition = "2018"
 [features]
 web = ["tearchan-gfx/webgl"]
 vulkan = ["tearchan-gfx/vulkan"]
+metal = ["tearchan-gfx/metal"]
 
 [dependencies]
 # libs

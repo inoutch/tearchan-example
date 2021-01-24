@@ -17,6 +17,7 @@ crate-type = ["lib", "cdylib"]
 
 [features]
 vulkan = ["common/vulkan"]
+metal = ["common/metal"]
 
 [dependencies]
 log = "0.4.11"
